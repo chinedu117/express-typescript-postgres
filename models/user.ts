@@ -18,9 +18,9 @@ class User extends Model<InferAttributes<User, { omit: 'projects' }>, InferCreat
   declare first_name: string;
   declare last_name?: string;
   declare email: string;
+  declare password: string;
   declare createdAt: CreationOptional<Date>;
   declare updatedAt: CreationOptional<Date>;
-
 
   declare getProjects: HasManyGetAssociationsMixin<Project>;
   declare addProject: HasManyAddAssociationMixin<Project, number>;
@@ -54,6 +54,10 @@ User.init({
     type: DataTypes.INTEGER,
     primaryKey: true,
     autoIncrement: true
+  },
+  password: {
+    type: DataTypes.STRING,
+    allowNull:true
   },
   first_name: {
     type: DataTypes.STRING,
