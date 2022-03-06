@@ -2,14 +2,14 @@ import { IAuthRequest } from "../../definitions";
 import { auth } from "../../utils/middlewares/auth"
 import { validateParallel } from "../../utils/middlewares/validate"
 var { body, check } = require("express-validator");
-import express from "express";
+import express, { RequestHandler } from "express";
 import User from "../../models/user";
 import bcrypt from "bcrypt"
 import createError from "http-errors"
 
 var encryption_rounds: number = parseInt(process.env.ENCRYTION_ROUNDS as string)
 
-const REGISTER_USER_ACTION: CallableFunction[]  = [
+const REGISTER_USER_ACTION: any[]  = [
 
     // auth,
 
@@ -34,7 +34,7 @@ const REGISTER_USER_ACTION: CallableFunction[]  = [
             });
 
             newUser = await newUser.save()
-
+            
             res.status(200).json({ user_id : newUser.id })
 
         } catch (error) {
