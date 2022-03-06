@@ -61,7 +61,7 @@ function checkEmailExists(email: string){
 
 }
 
-function confirmPassword(value: string, req: IAuthRequest) {
+function confirmPassword(value: string, { req}: {req: IAuthRequest} ) {
     if (value.trim() !== req.body.password) {
         throw new Error('Password mismatch!')
     }
