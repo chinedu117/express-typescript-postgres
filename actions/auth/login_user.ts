@@ -25,13 +25,14 @@ const LOGIN_USER_ACTION: any[] = [
                 throw createError(400,"Incorrect username or password")
             } 
 
-            let isCorrectPswd = await bcrypt.compare(req.body.password, user.password)
+            let isCorrectPswd = await bcrypt.compare(req.body.password, user.password as string)
 
             if(!isCorrectPswd){
 
                 throw createError(400,"Incorrect username or password")
             }
 
+            
             let token: string = generateToken(user)
 
             res.status(200).json({ token })

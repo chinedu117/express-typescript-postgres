@@ -11,6 +11,7 @@ chai.should()
 describe("USER AUTHENTICATION SYSTEM", () => {
     var email: string = faker.internet.email()
     var password: string = "12345667"
+    var token: string;
 
     describe('auth/signup', () => {
         it('should create a new user', (done) => {
@@ -93,6 +94,7 @@ describe("USER AUTHENTICATION SYSTEM", () => {
                     res.body.should.be.a("object")
                     res.body.should.have.property("token")
                     // console.log(res.body.token)
+                    token = `Bearer ${res.body.token}`  
                     done()
                 })
 
@@ -122,6 +124,29 @@ describe("USER AUTHENTICATION SYSTEM", () => {
                })
 
        })
+    })
+
+
+    describe("auth/user ", () => {
+         
+        it("should retrieve current user", (done) => {
+
+            chai.request(app)
+            .get('/api/v1/auth/user')
+            .set("Authorization", token)
+            .end((err: any, res: any) => {
+                console.log(res.body)
+                res.should.have.status(200)
+                res.body.should.be.a("object")
+                res.body.should.have.property("user")
+                res.body.user.should.have.property("id")
+                res.body.user.should.not.have.property("password")
+
+                // console.log(res.body.token)
+                done()
+            })
+
+        })
     })
 
 

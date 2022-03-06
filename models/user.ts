@@ -18,7 +18,7 @@ class User extends Model<InferAttributes<User, { omit: 'projects' }>, InferCreat
   declare first_name: string;
   declare last_name?: string;
   declare email: string;
-  declare password: string;
+  declare password?: string;
   declare createdAt: CreationOptional<Date>;
   declare updatedAt: CreationOptional<Date>;
 
@@ -47,6 +47,12 @@ class User extends Model<InferAttributes<User, { omit: 'projects' }>, InferCreat
 
 
 
+}
+
+User.prototype.toJSON = function(){
+  let values = Object.assign({},this.get())
+  delete values.password
+  return values
 }
 
 User.init({
