@@ -46,17 +46,17 @@ const REGISTER_USER_ACTION: any[]  = [
 ];
 
 
-function checkEmailExists(email: string){
-     let user = User.findOne({
+async function checkEmailExists(email: string){
+     let user = await User.findOne({
          where: {
              email: email
          }
      })
 
-     if (user == null){
-        throw new Error('User already exists.')
+     if (user){
+        return Promise.reject('User already exists.')
      }else {
-         return true;
+         return Promise.resolve(user);
      }
 
 }

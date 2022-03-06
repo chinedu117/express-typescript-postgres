@@ -3,6 +3,7 @@ var chai = require('chai')
 var chaiHttp = require('chai-http')
 import app from "../../index"
 import { faker } from "@faker-js/faker"
+import User from "../../models/user"
 
 chai.use(chaiHttp)
 chai.should()
@@ -35,6 +36,36 @@ describe("USER AUTHENTICATION SYSTEM", () => {
                     done();
                 });
 
+        })
+
+
+        it("should fail if email already exists", (done) => {
+            let password: string = "12345667"
+            let signup = {
+                first_name: faker.name.firstName(),
+                last_name: faker.name.lastName(),
+                email: faker.internet.email(),
+                password: password,
+                confirm_password: password,
+            }
+
+            User.create(signup)
+
+            chai.request(app)
+                .post('/api/v1/auth/signup')
+                .type('json')
+                .send(signup)
+                .end((err: any, res: any) => {
+                    console.log(err)
+                    console.log(res.body)
+                    res.should.have.status(422);
+                    res.body.should.be.a('object');
+                    res.body.should.have.property("errors")
+                    res.body.errors.should.be.a("array")
+
+                    done();
+                });
+             
         })
 
         
